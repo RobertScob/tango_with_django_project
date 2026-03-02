@@ -19,14 +19,6 @@
             <img src="/static/images/rango.jpg" alt="Picture of Rango" />
             <img src="/media/cat.jpg" alt="Picture of a Cat." />
         </div>
-
-        <div>         
-            <ul>
-                {% for category in categories %}
-                    <li>{{ category.name }} ({{ category.likes }} likes) ({{category.views}} views)</li>
-                {% endfor %}
-            </ul>
-        </div>
     </body>
     
 </html>
