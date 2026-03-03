@@ -13,7 +13,7 @@ def user_logout(request):
 
 @login_required
 def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
+    return render(request, 'rango/restricted.html')
 
 def user_login(request):
     if request.method == 'POST':
@@ -42,11 +42,13 @@ def register(request):
         
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
+            user.set_password(user.password)
+            user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
             
             if 'picture' in request.FILES:
-                profile.picture = request.FILES['picyure']
+                profile.picture = request.FILES['picture']
             
             profile.save()
             registered = True
@@ -71,6 +73,7 @@ def show_category(request, category_name_slug):
     
     return render(request, 'rango/category.html', context=context_dict)
 
+@login_required
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
@@ -97,6 +100,7 @@ def add_page(request, category_name_slug):
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
 
+@login_required
 def add_category(request):
     form = CategoryForm()
     if request.method == 'POST':
